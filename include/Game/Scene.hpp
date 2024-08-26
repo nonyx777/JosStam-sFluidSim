@@ -6,12 +6,14 @@
 #include "../Util/Grid.hpp"
 #include "../Globals.hpp"
 #include "../Util/Collision.hpp"
+#include "Fluid.hpp"
 
 class Scene : public GameObject
 {
 private:
     static Scene *instance;
     std::vector<std::vector<Box>> grid;
+    Fluid fluid;
 
 private:
     Scene();
@@ -27,4 +29,6 @@ public:
     void update(float dt) override;
     void update(sf::Vector2f &vec, float dt);
     void render(sf::RenderTarget *target) override;
+
+    void mouseDragged(int x, int y);
 };
