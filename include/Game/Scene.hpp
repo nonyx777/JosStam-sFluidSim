@@ -1,5 +1,6 @@
 #pragma once
 
+#include <random>
 #include "../GameObject.hpp"
 #include "../Entities/Entities.hpp"
 #include "../Util/Gizmo.hpp"
@@ -27,8 +28,8 @@ public:
     static Scene *getInstance();
 
     void update(float dt) override;
-    void update(sf::Vector2f &vec, float dt);
+    void update(sf::Vector2f &curPos, sf::Vector2f &prevPos, float dt);
     void render(sf::RenderTarget *target) override;
 
-    void mouseDragged(int x, int y);
+    void mouseDragged(int x, int y, float velX, float velY);
 };

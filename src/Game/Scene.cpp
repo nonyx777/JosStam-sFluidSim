@@ -9,7 +9,7 @@ Scene::Scene()
         configureGrid(GLOBAL::cell_size, &this->grid);
     }
 
-    this->fluid = Fluid(0, 0, 70);
+    this->fluid = Fluid(0, 0.00001f, 70);
 }
 
 Scene::~Scene()
@@ -30,21 +30,29 @@ void Scene::update(float dt)
     //...
 }
 
-void Scene::update(sf::Vector2f &vec, float dt)
+void Scene::update(sf::Vector2f &curPos, sf::Vector2f &prevPos, float dt)
 {
-    int x = floor(vec.x / GLOBAL::cell_size);
-    int y = floor(vec.y / GLOBAL::cell_size);
+    int x = floor(curPos.x / GLOBAL::cell_size);
+    int y = floor(curPos.y / GLOBAL::cell_size);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        this->mouseDragged(x, y);
+        this->mouseDragged(x, y, -(curPos.x - prevPos.x), -(curPos.y - prevPos.y));
 
     fluid.fluidStep();
 
+    // fade density
+    for (int i = 0; i < fluid.density.size(); i++)
+    {
+        float d = fluid.density[i];
+        fluid.density[i] = fluid.clampFloat(d - 0.1, 0, 255);
+    }
+
+    // assign color and opacity based on density
     for (uint i = 0; i < grid.size(); i++)
     {
         for (uint j = 0; j < grid[i].size(); j++)
         {
             float d = fluid.density[fluid.IX(i, j)];
-            grid[i][j].property.setFillColor(sf::Color(108, 255, 100, d));
+            grid[i][j].property.setFillColor(sf::Color(50.f, 150.f, 250.f, fluid.clampInt(d, 0, 255)));
         }
     }
 }
@@ -63,8 +71,8 @@ void Scene::render(sf::RenderTarget *target)
     }
 }
 
-void Scene::mouseDragged(int x, int y)
+void Scene::mouseDragged(int x, int y, float velX, float velY)
 {
-    this->fluid.addDensity(x, y, 100);
-    this->fluid.addVelocity(x, y, 0.1f, 0.1f);
+    this->fluid.addDensity(x, y, 255);
+    this->fluid.addVelocity(x, y, velX * 0.1f, velY * 0.1f);
 }

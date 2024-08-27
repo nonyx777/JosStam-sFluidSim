@@ -184,5 +184,6 @@ void Fluid::fluidStep()
 
 int Fluid::IX(int x, int y)
 {
-    return x * N + y;
+    int v = x * N + y;
+    return clampInt(v, 0, (N*N)-2);
 }

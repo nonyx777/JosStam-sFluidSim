@@ -48,4 +48,20 @@ public:
             v[i] = value;
         }
     }
+    int clampInt(int v, int min, int max)
+    {
+        if (v <= min)
+            v = min;
+        if (v >= max)
+            v = max;
+        return v;
+    }
+    float clampFloat(float v, float min, float max)
+    {
+        if (v <= min)
+            v = min;
+        if (v >= max)
+            v = max;
+        return v;
+    }
 };

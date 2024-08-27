@@ -2,6 +2,7 @@
 
 Engine::Engine() : Window()
 {
+    this->currMousePos = this->prevMousePos = sf::Vector2f(0.f, 0.f);
     this->initWindow();
     this->initImGui();
 }
@@ -20,7 +21,10 @@ void Engine::update(float dt)
     this->mouse_position = sf::Mouse::getPosition(*this->window);
     this->mouse_position_view = this->window->mapPixelToCoords(this->mouse_position);
 
-    scene->update(this->mouse_position_view, dt);
+    this->prevMousePos = this->currMousePos;
+    this->currMousePos = this->mouse_position_view;
+
+    scene->update(this->currMousePos, this->prevMousePos, dt);
     this->updateImGui();
     ImGui::Begin("Proto");
     ImGui::Text("FPS: %f", GLOBAL::fps);

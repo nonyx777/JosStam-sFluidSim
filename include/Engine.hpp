@@ -7,6 +7,9 @@ using namespace std;
 
 class Engine : public Window
 {
+private:
+    sf::Vector2f currMousePos;
+    sf::Vector2f prevMousePos;
 public:
     // initializer functions
     void initWindow() override;
