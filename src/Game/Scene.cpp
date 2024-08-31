@@ -8,8 +8,8 @@ Scene::Scene()
     {
         configureGrid(GLOBAL::cell_size, &this->grid);
     }
-
-    this->fluid = Fluid(0, 0.00001f, 70);
+    int N = GLOBAL::window_height / GLOBAL::cell_size; // assuming height and width are of the same value
+    this->fluid = Fluid(0, 0.00001f, N);
 }
 
 Scene::~Scene()
